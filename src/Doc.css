@@ -35,21 +35,21 @@
   width: 20px;
   height: 15px;
   border-radius: 7px;
-  background-color: rgb(82, 82, 82);
+  background-color: black;
   position: absolute;
-  top: 38px;
 }
 
-.doctor-eye-pupil.left {
+/* .doctor-eye-pupil.left {
   left: 45px;
 }
 
 .doctor-eye-pupil.right {
   right: 45px;
 }
+*/
 
 .doctor-eye-pupil {
-  transition: all 0.4s ease;
+  transition: all 0.2s ease;
 }
 
 .doctor-mouth {
