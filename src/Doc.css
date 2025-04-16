@@ -40,13 +40,6 @@
   top: 40px;
 }
 
-.doctor-eye-pupil.left {
-  left: 45px;
-}
-
-.doctor-eye-pupil.right {
-  right: 45px;
-}
 
 .doctor-mouth {
   width: 80px;
@@ -99,6 +92,7 @@
   transform-origin: bottom;
 }
 
+
 .doctor-eyelid.left {
   left: 30px;
 }
@@ -106,6 +100,7 @@
 .doctor-eyelid.right {
   right: 30px;
 }
+
 
 .doctor-eyelid.top.closed {
   transform: scaleY(1);
