@@ -36,6 +36,7 @@ export default function App() {
   const [isRolling, setIsRolling] = useState(false);
   const [pupilAngle, setPupilAngle] = useState(0);
   const [pupilDirection, setPupilDirection] = useState("center");
+  const [position, setPosition] = useState(0);
 
   function handleLook(direction) {
     setPupilDirection(direction);
@@ -124,9 +125,20 @@ export default function App() {
           }
         />
 
+        <div style={{
+               backgroundColor: "black",
+               width: "10px",
+               height: "10px",
+               position: "absolute",
+               left: `${position}px`,
+             }}/>
+
         <div className="doctor-mouth"></div>
       </div>
       <div className="doctor-buttons">
+        <button className="doctor-blink" onClick={() => setPosition(10)}>
+          Left
+        </button>
         <button className="doctor-blink" onClick={handleBlinkBoth}>
           Blink
         </button>
