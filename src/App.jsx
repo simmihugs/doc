@@ -6,10 +6,10 @@ const eyeLeft = { x: 30 + 25, y: 30 + 15 };
 const eyeRight = { x: 180 - 30 - 25, y: 30 + 15 };
 const pupilRadius = 8;
 const directions = {
-  left: Math.PI,       // 180°
-  right: 0,            // 0°
-  up: -Math.PI/2,      // 270°
-  down: Math.PI/2      // 90°
+  left: Math.PI,     
+  right: 0,          
+  up: -Math.PI/2,    
+  down: Math.PI/2    
 };
 
 function getPupilStyle(center, angle) {
