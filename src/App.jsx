@@ -4,8 +4,13 @@ import "./Doc.css";
 
 const eyeLeft = { x: 30 + 25, y: 30 + 15 };
 const eyeRight = { x: 180 - 30 - 25, y: 30 + 15 };
-
 const pupilRadius = 8;
+const directions = {
+  left: Math.PI,       // 180°
+  right: 0,            // 0°
+  up: -Math.PI/2,      // 270°
+  down: Math.PI/2      // 90°
+};
 
 function getPupilStyle(center, angle) {
   return {
@@ -15,6 +20,14 @@ function getPupilStyle(center, angle) {
   };
 }
 
+function getDirectionStyle(center, direction) {
+  if (!directions.hasOwnProperty(direction)) return {};
+  
+  return {
+    left: center.x + pupilRadius * Math.cos(directions[direction]) - 10,
+    top: center.y + pupilRadius * Math.sin(directions[direction]) - 7.5
+  };
+}
 
 export default function App() {
   const [isBlinking, setIsBlinking] = useState(false);
@@ -22,8 +35,13 @@ export default function App() {
   const [isBlinkingRight, setIsBlinkingRight] = useState(false);
   const [isRolling, setIsRolling] = useState(false);
   const [pupilAngle, setPupilAngle] = useState(0);
+  const [pupilDirection, setPupilDirection] = useState("center");
 
-
+  function handleLook(direction) {
+    setPupilDirection(direction);
+    setTimeout(() => setPupilDirection("center"), 500);
+  }
+  
   function handleBlink({ left = false, right = false }) {
     setIsBlinking(true);
     setIsBlinkingLeft(left);
@@ -63,8 +81,6 @@ export default function App() {
     requestAnimationFrame(animate);
   }
 
-  
-
   return (
     <div className="doctor-container">
       <div className="doctor-head">
@@ -93,11 +109,19 @@ export default function App() {
         <div className="doctor-eye right"></div>
         <div
           className="doctor-eye-pupil left"
-          style={isRolling ? getPupilStyle(eyeLeft, pupilAngle) : { left: 45, top: 40, position: "absolute" }}
+          style={
+            isRolling 
+              ? getPupilStyle(eyeLeft, pupilAngle)
+              : getDirectionStyle(eyeLeft, pupilDirection)
+          }
         />
         <div
           className="doctor-eye-pupil right"
-          style={isRolling ? getPupilStyle(eyeRight, pupilAngle) : { right: 45, top: 40, position: "absolute" }}
+          style={
+            isRolling 
+              ? getPupilStyle(eyeRight, pupilAngle)
+              : getDirectionStyle(eyeRight, pupilDirection)
+          }
         />
 
         <div className="doctor-mouth"></div>
@@ -113,6 +137,10 @@ export default function App() {
           Blink right
         </button>
         <button className="doctor-blink" onClick={handleRollEyes}>Roll</button>
+        <button className="doctor-blink" onClick={() => handleLook('left')}>Look Left</button>
+        <button className="doctor-blink" onClick={() => handleLook('right')}>Look Right</button>
+        <button className="doctor-blink" onClick={() => handleLook('up')}>Look Up</button>
+        <button className="doctor-blink" onClick={() => handleLook('down')}>Look Down</button>
       </div>
     </div>
   );
