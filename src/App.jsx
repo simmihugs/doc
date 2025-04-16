@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 import "./Doc.css";
 
@@ -6,10 +6,10 @@ const eyeLeft = { x: 30 + 25, y: 30 + 15 };
 const eyeRight = { x: 180 - 30 - 25, y: 30 + 15 };
 const pupilRadius = 8;
 const directions = {
-  left: Math.PI,     
-  right: 0,          
-  up: -Math.PI/2,    
-  down: Math.PI/2    
+  left: Math.PI,
+  right: 0,
+  up: -Math.PI / 2,
+  down: Math.PI / 2,
 };
 
 function getPupilStyle(center, angle) {
@@ -22,10 +22,10 @@ function getPupilStyle(center, angle) {
 
 function getDirectionStyle(center, direction) {
   if (!directions.hasOwnProperty(direction)) return {};
-  
+
   return {
     left: center.x + pupilRadius * Math.cos(directions[direction]) - 10,
-    top: center.y + pupilRadius * Math.sin(directions[direction]) - 7.5
+    top: center.y + pupilRadius * Math.sin(directions[direction]) - 7.5,
   };
 }
 
@@ -36,13 +36,54 @@ export default function App() {
   const [isRolling, setIsRolling] = useState(false);
   const [pupilAngle, setPupilAngle] = useState(0);
   const [pupilDirection, setPupilDirection] = useState("center");
-  const [position, setPosition] = useState(0);
+  const BASE_POSITION = { x: 45, y: 38 };
+  const [position, setPosition] = useState(BASE_POSITION);
+  const moveAmount = 10;
+  const timeoutRef = useRef(null);
 
   function handleLook(direction) {
     setPupilDirection(direction);
     setTimeout(() => setPupilDirection("center"), 500);
   }
-  
+
+  function handleMoveEyesDirection(direction) {
+    // 1. Clear any existing timeout before starting a new move
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // 2. Calculate the temporary position based on the BASE position
+    let temporaryPosition = { ...BASE_POSITION }; // Start from base
+
+    switch (direction) {
+      case "right":
+        temporaryPosition.x += moveAmount;
+        break;
+      case "left":
+        temporaryPosition.x -= moveAmount;
+        break;
+      case "up":
+        temporaryPosition.y -= moveAmount;
+        break;
+      case "down":
+        temporaryPosition.y += moveAmount;
+        break;
+      default:
+        console.warn("Unknown direction:", direction);
+        // If direction is unknown, don't change position or set timeout
+        return;
+    }
+
+    // 3. Set the temporary visual position
+    setPosition(temporaryPosition);
+
+    // 4. Schedule the restoration back to the BASE position
+    timeoutRef.current = setTimeout(() => {
+      setPosition(BASE_POSITION);
+      timeoutRef.current = null; // Clear the ref after timeout fires
+    }, 300);
+  }
+
   function handleBlink({ left = false, right = false }) {
     setIsBlinking(true);
     setIsBlinkingLeft(left);
@@ -108,37 +149,58 @@ export default function App() {
 
         <div className="doctor-eye left"></div>
         <div className="doctor-eye right"></div>
-        <div
-          className="doctor-eye-pupil left"
-          style={
-            isRolling 
-              ? getPupilStyle(eyeLeft, pupilAngle)
-              : getDirectionStyle(eyeLeft, pupilDirection)
-          }
-        />
-        <div
-          className="doctor-eye-pupil right"
-          style={
-            isRolling 
-              ? getPupilStyle(eyeRight, pupilAngle)
-              : getDirectionStyle(eyeRight, pupilDirection)
-          }
-        />
 
-        <div style={{
-               backgroundColor: "black",
-               width: "10px",
-               height: "10px",
-               position: "absolute",
-               left: `${position}px`,
-             }}/>
+        <div
+          style={{
+            backgroundColor: "black",
+            width: "20px",
+            height: "15px",
+            position: "absolute",
+            borderRadius: "40%",
+            left: `${position.x}px`,
+            top: `${position.y}px`,
+          }}
+        />
+        <div
+          style={{
+            backgroundColor: "black",
+            width: "20px",
+            height: "15px",
+            position: "absolute",
+            borderRadius: "40%",
+            left: `${position.x + 70}px`,
+            top: `${position.y}px`,
+          }}
+        />
 
         <div className="doctor-mouth"></div>
       </div>
       <div className="doctor-buttons">
-        <button className="doctor-blink" onClick={() => setPosition(10)}>
-          Left
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("left")}
+        >
+          Move Left
         </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("right")}
+        >
+          Move Right
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("up")}
+        >
+          Move Up
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("down")}
+        >
+          Move Down
+        </button>
+
         <button className="doctor-blink" onClick={handleBlinkBoth}>
           Blink
         </button>
@@ -148,13 +210,10 @@ export default function App() {
         <button className="doctor-blink" onClick={handleBlinkRight}>
           Blink right
         </button>
-        <button className="doctor-blink" onClick={handleRollEyes}>Roll</button>
-        <button className="doctor-blink" onClick={() => handleLook('left')}>Look Left</button>
-        <button className="doctor-blink" onClick={() => handleLook('right')}>Look Right</button>
-        <button className="doctor-blink" onClick={() => handleLook('up')}>Look Up</button>
-        <button className="doctor-blink" onClick={() => handleLook('down')}>Look Down</button>
+        <button className="doctor-blink" onClick={handleRollEyes}>
+          Roll
+        </button>
       </div>
     </div>
   );
 }
-
