@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
-import "./SvgFace.css";
-import SvgFace from "./SvgFace";
+import "./style/SvgFace.css";
+import SvgFace from "./character/SvgFace";
 import Animations from "./Animations";
 import * as Const from "./constants";
 

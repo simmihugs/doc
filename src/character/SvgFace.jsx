@@ -1,7 +1,7 @@
 import SvgMouth from "./SvgMouth";
 import EyeLid from "./EyeLid";
 import EyeBrow from "./EyeBrow";
-import * as Const from "./constants";
+import * as Const from "../constants";
 
 export default function SvgFace({
   isBlinking,
