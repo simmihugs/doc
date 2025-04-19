@@ -1,6 +1,5 @@
 import React from "react";
 
-// Define the order and the corresponding SVG path data (d attribute) for each expression
 export const EXPRESSION_ORDER = ["neutral", "smile", "surprised", "sad"];
 
 const MOUTH_PATHS = {

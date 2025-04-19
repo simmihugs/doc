@@ -3,78 +3,8 @@ import "./SvgFace.css";
 import SvgMouth, { EXPRESSION_ORDER } from "./SvgMouth";
 import EyeLid from "./EyeLid";
 import EyeBrow from "./EyeBrow";
+import Animations from "./Animations";
 import * as Const from "./constants";
-
-function _handleMoveEyesDirection({
-  direction,
-  setPosition,
-  BASE_POSITION,
-  moveAmount,
-  timeoutRef,
-}) {
-  if (timeoutRef.current) {
-    clearTimeout(timeoutRef.current);
-  }
-
-  let temporaryPosition = { ...BASE_POSITION };
-  const moveXAmount = moveAmount + 2;
-  const moveYAmount = moveAmount - 2;
-
-  switch (direction) {
-    case "right":
-      temporaryPosition.x = Math.min(
-        BASE_POSITION.x + moveXAmount,
-        BASE_POSITION.x + Const.EYE_RX - Const.PUPIL_RX,
-      );
-      break;
-    case "left":
-      temporaryPosition.x = Math.max(
-        BASE_POSITION.x - moveXAmount,
-        BASE_POSITION.x - Const.EYE_RX + Const.PUPIL_RX,
-      );
-      break;
-    case "up":
-      temporaryPosition.y = Math.max(
-        BASE_POSITION.y - moveYAmount,
-        BASE_POSITION.y - Const.EYE_RY + Const.PUPIL_RY,
-      );
-      break;
-    case "down":
-      temporaryPosition.y = Math.min(
-        BASE_POSITION.y + moveYAmount,
-        BASE_POSITION.y + Const.EYE_RY - Const.PUPIL_RY,
-      );
-      break;
-    default:
-      console.warn("Unknown direction:", direction);
-      return;
-  }
-
-  setPosition(temporaryPosition);
-
-  timeoutRef.current = setTimeout(() => {
-    setPosition(BASE_POSITION);
-    timeoutRef.current = null;
-  }, 500);
-}
-
-function _handleBlink({
-  setIsBlinking,
-  setIsBlinkingLeft,
-  setIsBlinkingRight,
-  left = false,
-  right = false,
-}) {
-  setIsBlinking(true);
-  setIsBlinkingLeft(left);
-  setIsBlinkingRight(right);
-
-  setTimeout(() => {
-    setIsBlinking(false);
-    setIsBlinkingLeft(false);
-    setIsBlinkingRight(false);
-  }, 300);
-}
 
 export default function SvgFace() {
   const [isBlinking, setIsBlinking] = useState(false);
@@ -91,62 +21,6 @@ export default function SvgFace() {
   const [rightEyebrowY, setRightEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const eyebrowMoveAmount = -5;
 
-  function handleButtonClick() {
-    const currentIndex = EXPRESSION_ORDER.indexOf(mouthExpression);
-    const nextIndex = (currentIndex + 1) % EXPRESSION_ORDER.length;
-    setMouthExpression(EXPRESSION_ORDER[nextIndex]);
-  }
-
-  function handleBlink({ left = false, right = false }) {
-    _handleBlink({
-      setIsBlinking,
-      setIsBlinkingLeft,
-      setIsBlinkingRight,
-      left,
-      right,
-    });
-  }
-
-  function handleBlinkLeft() {
-    handleBlink({ left: true });
-  }
-  function handleBlinkBoth() {
-    handleBlink({ left: true, right: true });
-  }
-  function handleBlinkRight() {
-    handleBlink({ right: true });
-  }
-
-  function handleMoveEyesDirection(direction) {
-    _handleMoveEyesDirection({
-      direction,
-      setPosition,
-      BASE_POSITION: {
-        x: Const.BASE_PUPIL_LEFT_CX,
-        y: Const.BASE_PUPIL_Y,
-      },
-      moveAmount,
-      timeoutRef,
-    });
-  }
-  function handleRaiseLeftEyebrow() {
-    setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setTimeout(() => setLeftEyebrowY(Const.BASE_EYEBROW_Y), 300);
-  }
-
-  function handleRaiseRightEyebrow() {
-    setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setTimeout(() => setRightEyebrowY(Const.BASE_EYEBROW_Y), 300);
-  }
-
-  function handleRaiseBothEyebrows() {
-    setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setTimeout(() => {
-      setLeftEyebrowY(Const.BASE_EYEBROW_Y);
-      setRightEyebrowY(Const.BASE_EYEBROW_Y);
-    }, 300);
-  }
   return (
     <div className="svg-doctor-container">
       <div className="svg-doctor-face">
@@ -201,7 +75,7 @@ export default function SvgFace() {
 
           <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
           <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
-          <SvgMouth mouthExpression={mouthExpression} />
+          <SvgMounth mouthExpression={mouthExpression} />
 
           <EyeLid
             isBlinking={isBlinking}
@@ -234,53 +108,19 @@ export default function SvgFace() {
         </svg>
       </div>
 
-      <div className="svg-doctor-buttons">
-        <button onClick={handleButtonClick} className="svg-doctor-button">
-          Change Expression
-        </button>
-        <button
-          className="svg-doctor-button"
-          onClick={() => handleMoveEyesDirection("left")}
-        >
-          Move Left
-        </button>
-        <button
-          className="svg-doctor-button"
-          onClick={() => handleMoveEyesDirection("right")}
-        >
-          Move Right
-        </button>
-        <button
-          className="svg-doctor-button"
-          onClick={() => handleMoveEyesDirection("up")}
-        >
-          Move Up
-        </button>
-        <button
-          className="svg-doctor-button"
-          onClick={() => handleMoveEyesDirection("down")}
-        >
-          Move Down
-        </button>
-        <button className="svg-doctor-button" onClick={handleBlinkBoth}>
-          Blink
-        </button>
-        <button className="svg-doctor-button" onClick={handleBlinkLeft}>
-          Blink Left
-        </button>
-        <button className="svg-doctor-button" onClick={handleBlinkRight}>
-          Blink Right
-        </button>
-        <button className="svg-doctor-button" onClick={handleRaiseLeftEyebrow}>
-          Raise Left Brow
-        </button>
-        <button className="svg-doctor-button" onClick={handleRaiseRightEyebrow}>
-          Raise Right Brow
-        </button>
-        <button className="svg-doctor-button" onClick={handleRaiseBothEyebrows}>
-          Raise Both Brows
-        </button>
-      </div>
+      <Animations
+        mouthExpression={mouthExpression}
+        setMouthExpression={setMouthExpression}
+        setIsBlinking={setIsBlinking}
+        setIsBlinkingLeft={setIsBlinkingLeft}
+        setIsBlinkingRight={setIsBlinkingRight}
+        setPosition={setPosition}
+        moveAmount={moveAmount}
+        timeoutRef={timeoutRef}
+        setLeftEyebrowY={setLeftEyebrowY}
+        setRightEyebrowY={setRightEyebrowY}
+        eyebrowMoveAmount={eyebrowMoveAmount}
+      />
     </div>
   );
 }
