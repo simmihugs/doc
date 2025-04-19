@@ -76,7 +76,11 @@ export default function SvgFace() {
 
           <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
           <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
-          <SvgMouth mouthExpression={mouthExpression} talking={talking} />
+          <SvgMouth
+            mouthExpression={mouthExpression}
+            setTalking={setTalking}
+            talking={talking}
+          />
 
           <EyeLid
             isBlinking={isBlinking}

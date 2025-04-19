@@ -139,18 +139,12 @@ export default function Animations({
       setRightEyebrowY(Const.BASE_EYEBROW_Y);
     }, 300);
   }
-  function startTalking() {
+  function talk() {
     setTalking(true);
-  }
-  function stopTalking() {
-    setTalking(false);
   }
 
   return (
     <div className="svg-doctor-buttons">
-      <button onClick={handleButtonClick} className="svg-doctor-button">
-        Change Expression
-      </button>
       <button
         className="svg-doctor-button"
         onClick={() => handleMoveEyesDirection("left")}
@@ -193,11 +187,8 @@ export default function Animations({
       <button className="svg-doctor-button" onClick={handleRaiseBothEyebrows}>
         Raise Both Brows
       </button>
-      <button onClick={startTalking} className="svg-doctor-button">
-        Start Talking
-      </button>
-      <button onClick={stopTalking} className="svg-doctor-button">
-        Stop Talking
+      <button onClick={talk} className="svg-doctor-button">
+        Talk
       </button>
     </div>
   );
