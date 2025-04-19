@@ -8,7 +8,7 @@ const MOUTH_PATHS = {
   smile: "M 75 130 Q 100 145 125 130",
   surprised: "M 90 130 Q 100 140 110 130 Q 100 150 90 130 Z",
   sad: "M 75 140 Q 100 130 125 140",
-  open: "M 80 130 Q 100 138 120 130",
+  open: "M 80 130 Q 100 170 120 130",
 };
 
 export default function SvgMouth({
@@ -125,13 +125,22 @@ export default function SvgMouth({
   }, []); // Empty dependency array for unmount cleanup
 
   return (
-    <path
-      ref={pathRef}
-      d={mouthExpression ? MOUTH_PATHS[mouthExpression] : MOUTH_PATHS.neutral}
-      fill="none"
-      stroke="black"
-      strokeWidth="5"
-      strokeLinecap="round"
-    />
+    <>
+      <path
+        ref={pathRef}
+        d={mouthExpression ? MOUTH_PATHS[mouthExpression] : MOUTH_PATHS.neutral}
+        fill="#383221"
+        stroke="black"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <path
+        d={MOUTH_PATHS.neutral}
+        fill="none"
+        stroke="black"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+    </>
   );
 }
