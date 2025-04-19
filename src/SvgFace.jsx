@@ -1,21 +1,23 @@
 import React, { useState, useRef } from "react";
 import "./SvgFace.css";
 import SvgMouth, { EXPRESSION_ORDER } from "./SvgMouth";
-
-const EYE_OFFSET_X = 35;
-const HEAD_CENTER_X = 100;
-const HEAD_CENTER_Y = 100;
-const HEAD_RADIUS = 90;
-const EYE_Y = 65;
-const EYE_RX = 25;
-const EYE_RY = 15;
-const PUPIL_RX = 10;
-const PUPIL_RY = 8;
-const EYELID_WIDTH = EYE_RX * 2;
-const LEFT_EYE_CX = HEAD_CENTER_X - EYE_OFFSET_X;
-const RIGHT_EYE_CX = HEAD_CENTER_X + EYE_OFFSET_X;
-const BASE_PUPIL_LEFT_CX = LEFT_EYE_CX;
-const BASE_PUPIL_Y = EYE_Y;
+import EyeLid from "./EyeLid";
+import EyeBrow from "./EyeBrow";
+import {
+  BASE_PUPIL_LEFT_CX,
+  BASE_PUPIL_Y,
+  BASE_EYEBROW_Y,
+  HEAD_CENTER_X,
+  HEAD_CENTER_Y,
+  HEAD_RADIUS,
+  LEFT_EYE_CX,
+  EYE_Y,
+  EYE_RX,
+  EYE_RY,
+  RIGHT_EYE_CX,
+  PUPIL_RX,
+  PUPIL_RY,
+} from "./constants";
 
 function _handleMoveEyesDirection({
   direction,
@@ -88,47 +90,6 @@ function _handleBlink({
   }, 300);
 }
 
-function EyeLid({
-  isBlinking,
-  isBlinkingLeft,
-  isBlinkingRight,
-  side,
-  position,
-}) {
-  const getEyelidProps = (side, position) => {
-    const isLeft = side === "left";
-    const isTop = position === "top";
-    const eyeCenterX = isLeft ? LEFT_EYE_CX : RIGHT_EYE_CX;
-    const eyelidX = eyeCenterX - EYE_RX;
-    const eyelidWidth = EYELID_WIDTH;
-
-    const isThisEyelidBlinking =
-      isBlinking && (isLeft ? isBlinkingLeft : isBlinkingRight);
-    const closedHeight = EYE_RY + 2;
-    const openHeight = 0;
-
-    const currentHeight = isThisEyelidBlinking ? closedHeight : openHeight;
-
-    let yPos;
-
-    if (isTop) {
-      yPos = EYE_Y - EYE_RY;
-    } else {
-      yPos = EYE_Y + EYE_RY - currentHeight;
-    }
-
-    return {
-      x: eyelidX,
-      y: yPos,
-      width: eyelidWidth,
-      height: currentHeight,
-      className: `svg-doctor-eyelid ${isThisEyelidBlinking ? "closed" : ""}`,
-    };
-  };
-
-  return <rect {...getEyelidProps(side, position)} fill="#f5d4a0" />;
-}
-
 export default function SvgFace() {
   const [isBlinking, setIsBlinking] = useState(false);
   const [isBlinkingLeft, setIsBlinkingLeft] = useState(false);
@@ -137,10 +98,12 @@ export default function SvgFace() {
     x: BASE_PUPIL_LEFT_CX,
     y: BASE_PUPIL_Y,
   });
-
   const [mouthExpression, setMouthExpression] = useState("neutral");
   const moveAmount = 10;
   const timeoutRef = useRef(null);
+  const [leftEyebrowY, setLeftEyebrowY] = useState(BASE_EYEBROW_Y);
+  const [rightEyebrowY, setRightEyebrowY] = useState(BASE_EYEBROW_Y);
+  const eyebrowMoveAmount = -5;
 
   function handleButtonClick() {
     const currentIndex = EXPRESSION_ORDER.indexOf(mouthExpression);
@@ -177,7 +140,24 @@ export default function SvgFace() {
       timeoutRef,
     });
   }
+  function handleRaiseLeftEyebrow() {
+    setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
+    setTimeout(() => setLeftEyebrowY(BASE_EYEBROW_Y), 300);
+  }
 
+  function handleRaiseRightEyebrow() {
+    setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
+    setTimeout(() => setRightEyebrowY(BASE_EYEBROW_Y), 300);
+  }
+
+  function handleRaiseBothEyebrows() {
+    setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
+    setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
+    setTimeout(() => {
+      setLeftEyebrowY(BASE_EYEBROW_Y);
+      setRightEyebrowY(BASE_EYEBROW_Y);
+    }, 300);
+  }
   return (
     <div className="svg-doctor-container">
       <div className="svg-doctor-face">
@@ -193,7 +173,6 @@ export default function SvgFace() {
             expressions.
           </desc>
 
-          {/* Head */}
           <circle
             cx={HEAD_CENTER_X}
             cy={HEAD_CENTER_Y}
@@ -231,6 +210,8 @@ export default function SvgFace() {
             fill="black"
           />
 
+          <EyeBrow x={LEFT_EYE_CX} y={leftEyebrowY} />
+          <EyeBrow x={RIGHT_EYE_CX} y={rightEyebrowY} />
           <SvgMouth mouthExpression={mouthExpression} />
 
           <EyeLid
@@ -300,6 +281,15 @@ export default function SvgFace() {
         </button>
         <button className="svg-doctor-button" onClick={handleBlinkRight}>
           Blink Right
+        </button>
+        <button className="svg-doctor-button" onClick={handleRaiseLeftEyebrow}>
+          Raise Left Brow
+        </button>
+        <button className="svg-doctor-button" onClick={handleRaiseRightEyebrow}>
+          Raise Right Brow
+        </button>
+        <button className="svg-doctor-button" onClick={handleRaiseBothEyebrows}>
+          Raise Both Brows
         </button>
       </div>
     </div>

@@ -1,0 +1,17 @@
+export const EYE_Y = 65;
+export const EYE_RX = 25;
+export const EYE_RY = 15;
+export const HEAD_CENTER_X = 100;
+export const HEAD_CENTER_Y = 100;
+export const HEAD_RADIUS = 90;
+export const BASE_PUPIL_Y = EYE_Y;
+export const EYE_OFFSET_X = 35;
+export const EYELID_WIDTH = EYE_RX * 2;
+export const LEFT_EYE_CX = HEAD_CENTER_X - EYE_OFFSET_X;
+export const RIGHT_EYE_CX = HEAD_CENTER_X + EYE_OFFSET_X;
+export const BASE_PUPIL_LEFT_CX = LEFT_EYE_CX;
+export const PUPIL_RX = 10;
+export const PUPIL_RY = 8;
+export const EYEBROW_HEIGHT = 5;
+export const EYEBROW_WIDTH = 30;
+export const BASE_EYEBROW_Y = EYE_Y - EYE_RY - 5;
