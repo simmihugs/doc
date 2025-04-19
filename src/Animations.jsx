@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { EXPRESSION_ORDER } from "./SvgMouth";
 import * as Const from "./constants";
 
@@ -84,7 +85,9 @@ export default function Animations({
   setLeftEyebrowY,
   setRightEyebrowY,
   eyebrowMoveAmount,
+  setTalking,
 }) {
+  const speechAnimationRef = useRef(null);
   function handleButtonClick() {
     const currentIndex = EXPRESSION_ORDER.indexOf(mouthExpression);
     const nextIndex = (currentIndex + 1) % EXPRESSION_ORDER.length;
@@ -136,6 +139,13 @@ export default function Animations({
       setRightEyebrowY(Const.BASE_EYEBROW_Y);
     }, 300);
   }
+  function startTalking() {
+    setTalking(true);
+  }
+  function stopTalking() {
+    setTalking(false);
+  }
+
   return (
     <div className="svg-doctor-buttons">
       <button onClick={handleButtonClick} className="svg-doctor-button">
@@ -182,6 +192,12 @@ export default function Animations({
       </button>
       <button className="svg-doctor-button" onClick={handleRaiseBothEyebrows}>
         Raise Both Brows
+      </button>
+      <button onClick={startTalking} className="svg-doctor-button">
+        Start Talking
+      </button>
+      <button onClick={stopTalking} className="svg-doctor-button">
+        Stop Talking
       </button>
     </div>
   );

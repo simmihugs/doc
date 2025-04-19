@@ -19,6 +19,7 @@ export default function SvgFace() {
   const timeoutRef = useRef(null);
   const [leftEyebrowY, setLeftEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const [rightEyebrowY, setRightEyebrowY] = useState(Const.BASE_EYEBROW_Y);
+  const [talking, setTalking] = useState(false);
   const eyebrowMoveAmount = -5;
 
   return (
@@ -75,7 +76,7 @@ export default function SvgFace() {
 
           <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
           <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
-          <SvgMouth mouthExpression={mouthExpression} />
+          <SvgMouth mouthExpression={mouthExpression} talking={talking} />
 
           <EyeLid
             isBlinking={isBlinking}
@@ -120,6 +121,7 @@ export default function SvgFace() {
         setLeftEyebrowY={setLeftEyebrowY}
         setRightEyebrowY={setRightEyebrowY}
         eyebrowMoveAmount={eyebrowMoveAmount}
+        setTalking={setTalking}
       />
     </div>
   );
