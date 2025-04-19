@@ -17,23 +17,23 @@ export default function Face({
   size = 100,
 }) {
   const scale = size / 100;
-  const neckWidth = 50 * scale;
-  const neckHeight = 40 * scale;
-  const shoulderWidth = 240 * scale;
-  const shoulderHeightTop = 20 * scale;
-  const shoulderHeightBottom = 15 * scale;
-  const shoulderRoundRadius = 20 * scale;
-  const headRadius = Const.HEAD_RADIUS * scale;
-  const headCenterY = Const.HEAD_CENTER_Y * scale;
-  const headCenterX = Const.HEAD_CENTER_X * scale;
-  const neckTopY = headCenterY + headRadius;
-  const neckX = headCenterX - neckWidth / 2;
-  const shoulderTopY = neckTopY + neckHeight - 5 * scale;
-  const shoulderX = headCenterX - shoulderWidth / 2;
+  //const neckWidth = 50 * scale;
+  //const neckHeight = 40 * scale;
+  //const shoulderWidth = 240 * scale;
+  //const shoulderHeightTop = 20 * scale;
+  //const shoulderHeightBottom = 15 * scale;
+  //const shoulderRoundRadius = 20 * scale;
+  //const headRadius = Const.HEAD_RADIUS * scale;
+  //const headCenterY = Const.HEAD_CENTER_Y * scale;
+  //const headCenterX = Const.HEAD_CENTER_X * scale;
+  //const neckTopY = headCenterY + headRadius;
+  //const neckX = headCenterX - neckWidth / 2;
+  //const shoulderTopY = neckTopY + neckHeight - 5 * scale;
+  //const shoulderX = headCenterX - shoulderWidth / 2;
 
-  const shoulderXLeft = headCenterX - shoulderWidth / 2;
-  const shoulderXRight = headCenterX + shoulderWidth / 2;
-  const shoulderBottomY = shoulderTopY + shoulderHeightTop;
+  //const shoulderXLeft = headCenterX - shoulderWidth / 2;
+  //const shoulderXRight = headCenterX + shoulderWidth / 2;
+  //const shoulderBottomY = shoulderTopY + shoulderHeightTop;
 
   // Calculate the new viewBox dimensions
   const viewBoxX = 0;
@@ -56,29 +56,29 @@ export default function Face({
         </desc>
 
         <circle
-          cx={headCenterX}
-          cy={headCenterY - 30}
-          r={headRadius * 0.75}
+          cx={Const.HEAD_CENTER_X} // Should already be scaled
+          cy={Const.HEAD_CENTER_Y - 30 * scale}
+          r={Const.HEAD_RADIUS * 0.75} // Should already be scaled
           fill="#f5d4a0"
         />
         <circle
-          cx={headCenterX}
-          cy={headCenterY + 10}
-          r={headRadius * 0.75}
+          cx={Const.HEAD_CENTER_X} // Should already be scaled
+          cy={Const.HEAD_CENTER_Y + 10 * scale}
+          r={Const.HEAD_RADIUS * 0.75} // Should already be scaled
           fill="#f5d4a0"
         />
         <rect
-          x={headCenterX - headRadius * 0.75}
-          y={headCenterY - 30}
-          width={headRadius * 0.75 * 2}
-          height="50"
+          x={Const.HEAD_CENTER_X - Const.HEAD_RADIUS * 0.75} // Should scale because headRadius is scaled
+          y={Const.HEAD_CENTER_Y - 30 * scale}
+          width={Const.HEAD_RADIUS * 0.75 * 2} // Should scale because headRadius is scaled
+          height={50 * scale}
           fill="#f5d4a0"
         />
 
         <Eye position={position} side="left" />
         <Eye position={position} side="right" />
-        <EyeBrow x={Const.LEFT_EYE_CX * scale} y={leftEyebrowY * scale} />
-        <EyeBrow x={Const.RIGHT_EYE_CX * scale} y={rightEyebrowY * scale} />
+        <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
+        <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
         <Mouth
           mouthExpression={mouthExpression}
           setTalking={setTalking}
