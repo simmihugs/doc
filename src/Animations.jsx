@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { EXPRESSION_ORDER } from "./character/SvgMouth";
+import { EXPRESSION_ORDER } from "./character/head/Mouth";
 import * as Const from "./constants";
 
 function _handleMoveEyesDirection({

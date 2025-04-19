@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import "./style/SvgFace.css";
-import SvgFace from "./character/SvgFace";
+import SvgFace from "./character/head/Face";
 import Animations from "./Animations";
 import * as Const from "./constants";
+import Shirt from "./character/body/Shirt";
 
 export default function App() {
   const [isBlinking, setIsBlinking] = useState(false);
@@ -24,31 +25,24 @@ export default function App() {
     <div className="svg-doctor-container">
       <div className="faces-container">
         {sizes.map((size, index) => (
-          <SvgFace
-            key={index}
-            isBlinking={isBlinking}
-            setIsBlinking={setIsBlinking}
-            isBlinkingLeft={isBlinkingLeft}
-            setIsBlinkingLeft={setIsBlinkingLeft}
-            isBlinkingRight={isBlinkingRight}
-            setIsBlinkingRight={setIsBlinkingRight}
-            position={position}
-            setPosition={setPosition}
-            mouthExpression={mouthExpression}
-            setMouthExpression={setMouthExpression}
-            moveAmount={moveAmount}
-            timeoutRef={timeoutRef}
-            leftEyebrowY={leftEyebrowY}
-            setLeftEyebrowY={setLeftEyebrowY}
-            rightEyebrowY={rightEyebrowY}
-            setRightEyebrowY={setRightEyebrowY}
-            talking={talking}
-            setTalking={setTalking}
-            eyebrowMoveAmount={eyebrowMoveAmount}
-            size={size}
-          />
+          <div key={index}>
+            <SvgFace
+              isBlinking={isBlinking}
+              isBlinkingLeft={isBlinkingLeft}
+              isBlinkingRight={isBlinkingRight}
+              position={position}
+              mouthExpression={mouthExpression}
+              leftEyebrowY={leftEyebrowY}
+              rightEyebrowY={rightEyebrowY}
+              talking={talking}
+              setTalking={setTalking}
+              size={size}
+            />
+            <Shirt size={size} />
+          </div>
         ))}
       </div>
+
       <Animations
         mouthExpression={mouthExpression}
         setMouthExpression={setMouthExpression}

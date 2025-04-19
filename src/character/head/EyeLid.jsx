@@ -5,7 +5,7 @@ import {
   LEFT_EYE_CX,
   RIGHT_EYE_CX,
   EYE_Y,
-} from "../constants";
+} from "../../constants";
 
 export default function EyeLid({
   isBlinking,

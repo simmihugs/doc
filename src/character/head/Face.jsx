@@ -1,28 +1,19 @@
-import SvgMouth from "./SvgMouth";
+import Mouth from "./Mouth";
 import EyeLid from "./EyeLid";
 import EyeBrow from "./EyeBrow";
-import * as Const from "../constants";
+import Eye from "./Eye";
+import * as Const from "../../constants";
 
-export default function SvgFace({
+export default function Face({
   isBlinking,
-  setIsBlinking,
   isBlinkingLeft,
-  setIsBlinkingLeft,
   isBlinkingRight,
-  setIsBlinkingRight,
   position,
-  setPosition,
   mouthExpression,
-  setMouthExpression,
-  moveAmount,
-  timeoutRef,
   leftEyebrowY,
-  setLeftEyebrowY,
   rightEyebrowY,
-  setRightEyebrowY,
   talking,
   setTalking,
-  eyebrowMoveAmount,
   size = 100,
 }) {
   return (
@@ -46,39 +37,12 @@ export default function SvgFace({
           fill="#f5d4a0"
         />
 
-        <ellipse
-          cx={Const.LEFT_EYE_CX}
-          cy={Const.EYE_Y}
-          rx={Const.EYE_RX}
-          ry={Const.EYE_RY}
-          fill="rgb(247, 247, 247)"
-        />
-        <ellipse
-          cx={Const.RIGHT_EYE_CX}
-          cy={Const.EYE_Y}
-          rx={Const.EYE_RX}
-          ry={Const.EYE_RY}
-          fill="rgb(247, 247, 247)"
-        />
-
-        <ellipse
-          cx={position.x}
-          cy={position.y}
-          rx={Const.PUPIL_RX}
-          ry={Const.PUPIL_RY}
-          fill="black"
-        />
-        <ellipse
-          cx={position.x + (Const.RIGHT_EYE_CX - Const.LEFT_EYE_CX)}
-          cy={position.y}
-          rx={Const.PUPIL_RX}
-          ry={Const.PUPIL_RY}
-          fill="black"
-        />
+        <Eye position={position} side="left" />
+        <Eye position={position} side="right" />
 
         <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
         <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
-        <SvgMouth
+        <Mouth
           mouthExpression={mouthExpression}
           setTalking={setTalking}
           talking={talking}

@@ -1,4 +1,4 @@
-import { EYEBROW_WIDTH, EYEBROW_HEIGHT } from "../constants";
+import { EYEBROW_WIDTH, EYEBROW_HEIGHT } from "../../constants";
 
 export default function EyeBrow({ x, y, rotate = 0 }) {
   const pathD = `
