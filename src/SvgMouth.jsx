@@ -82,9 +82,8 @@ export default function SvgMouth({
           attr: { d: MOUTH_PATHS.open },
         });
 
-        // Set a timeout to stop the talking animation after a duration
         talkingTimeout.current = setTimeout(() => {
-          setTalking(false); // Update the talking state in the parent
+          setTalking(false);
         }, animationDuration);
       }
     },
@@ -97,7 +96,7 @@ export default function SvgMouth({
       transitionToExpression(currentExpression.current);
       speechTimeline.current = null;
     }
-    // Clear the timeout if it's active
+
     if (talkingTimeout.current) {
       clearTimeout(talkingTimeout.current);
       talkingTimeout.current = null;
@@ -113,16 +112,15 @@ export default function SvgMouth({
   }, [talking, startSpeech, stopSpeech]);
 
   useEffect(() => {
-    // Cleanup function to clear the timeout if the component unmounts
     return () => {
       if (talkingTimeout.current) {
         clearTimeout(talkingTimeout.current);
       }
       if (speechTimeline.current) {
-        speechTimeline.current.kill(); // Clean up the GSAP timeline
+        speechTimeline.current.kill();
       }
     };
-  }, []); // Empty dependency array for unmount cleanup
+  }, []);
 
   return (
     <>
