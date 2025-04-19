@@ -19,96 +19,36 @@ export default function App() {
   const [rightEyebrowY, setRightEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const [talking, setTalking] = useState(false);
   const eyebrowMoveAmount = -5;
-
+  const sizes = [10, 25, 50, 100];
   return (
     <div className="svg-doctor-container">
-      <SvgFace
-        isBlinking={isBlinking}
-        setIsBlinking={setIsBlinking}
-        isBlinkingLeft={isBlinkingLeft}
-        setIsBlinkingLeft={setIsBlinkingLeft}
-        isBlinkingRight={isBlinkingRight}
-        setIsBlinkingRight={setIsBlinkingRight}
-        position={position}
-        setPosition={setPosition}
-        mouthExpression={mouthExpression}
-        setMouthExpression={setMouthExpression}
-        moveAmount={moveAmount}
-        timeoutRef={timeoutRef}
-        leftEyebrowY={leftEyebrowY}
-        setLeftEyebrowY={setLeftEyebrowY}
-        rightEyebrowY={rightEyebrowY}
-        setRightEyebrowY={setRightEyebrowY}
-        talking={talking}
-        setTalking={setTalking}
-        eyebrowMoveAmount={eyebrowMoveAmount}
-        size={10}
-      />{" "}
-      <SvgFace
-        isBlinking={isBlinking}
-        setIsBlinking={setIsBlinking}
-        isBlinkingLeft={isBlinkingLeft}
-        setIsBlinkingLeft={setIsBlinkingLeft}
-        isBlinkingRight={isBlinkingRight}
-        setIsBlinkingRight={setIsBlinkingRight}
-        position={position}
-        setPosition={setPosition}
-        mouthExpression={mouthExpression}
-        setMouthExpression={setMouthExpression}
-        moveAmount={moveAmount}
-        timeoutRef={timeoutRef}
-        leftEyebrowY={leftEyebrowY}
-        setLeftEyebrowY={setLeftEyebrowY}
-        rightEyebrowY={rightEyebrowY}
-        setRightEyebrowY={setRightEyebrowY}
-        talking={talking}
-        setTalking={setTalking}
-        eyebrowMoveAmount={eyebrowMoveAmount}
-        size={25}
-      />{" "}
-      <SvgFace
-        isBlinking={isBlinking}
-        setIsBlinking={setIsBlinking}
-        isBlinkingLeft={isBlinkingLeft}
-        setIsBlinkingLeft={setIsBlinkingLeft}
-        isBlinkingRight={isBlinkingRight}
-        setIsBlinkingRight={setIsBlinkingRight}
-        position={position}
-        setPosition={setPosition}
-        mouthExpression={mouthExpression}
-        setMouthExpression={setMouthExpression}
-        moveAmount={moveAmount}
-        timeoutRef={timeoutRef}
-        leftEyebrowY={leftEyebrowY}
-        setLeftEyebrowY={setLeftEyebrowY}
-        rightEyebrowY={rightEyebrowY}
-        setRightEyebrowY={setRightEyebrowY}
-        talking={talking}
-        setTalking={setTalking}
-        eyebrowMoveAmount={eyebrowMoveAmount}
-        size={50}
-      />
-      <SvgFace
-        isBlinking={isBlinking}
-        setIsBlinking={setIsBlinking}
-        isBlinkingLeft={isBlinkingLeft}
-        setIsBlinkingLeft={setIsBlinkingLeft}
-        isBlinkingRight={isBlinkingRight}
-        setIsBlinkingRight={setIsBlinkingRight}
-        position={position}
-        setPosition={setPosition}
-        mouthExpression={mouthExpression}
-        setMouthExpression={setMouthExpression}
-        moveAmount={moveAmount}
-        timeoutRef={timeoutRef}
-        leftEyebrowY={leftEyebrowY}
-        setLeftEyebrowY={setLeftEyebrowY}
-        rightEyebrowY={rightEyebrowY}
-        setRightEyebrowY={setRightEyebrowY}
-        talking={talking}
-        setTalking={setTalking}
-        eyebrowMoveAmount={eyebrowMoveAmount}
-      />
+      <div className="faces-container">
+        {sizes.map((size, index) => (
+          <SvgFace
+            key={index}
+            isBlinking={isBlinking}
+            setIsBlinking={setIsBlinking}
+            isBlinkingLeft={isBlinkingLeft}
+            setIsBlinkingLeft={setIsBlinkingLeft}
+            isBlinkingRight={isBlinkingRight}
+            setIsBlinkingRight={setIsBlinkingRight}
+            position={position}
+            setPosition={setPosition}
+            mouthExpression={mouthExpression}
+            setMouthExpression={setMouthExpression}
+            moveAmount={moveAmount}
+            timeoutRef={timeoutRef}
+            leftEyebrowY={leftEyebrowY}
+            setLeftEyebrowY={setLeftEyebrowY}
+            rightEyebrowY={rightEyebrowY}
+            setRightEyebrowY={setRightEyebrowY}
+            talking={talking}
+            setTalking={setTalking}
+            eyebrowMoveAmount={eyebrowMoveAmount}
+            size={size}
+          />
+        ))}
+      </div>
       <Animations
         mouthExpression={mouthExpression}
         setMouthExpression={setMouthExpression}

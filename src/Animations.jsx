@@ -146,48 +146,67 @@ export default function Animations({
   return (
     <div className="svg-doctor-buttons">
       <button
-        className="svg-doctor-button"
+        className="svg-doctor-button color1"
         onClick={() => handleMoveEyesDirection("left")}
       >
-        Move Left
+        Look left
       </button>
+
       <button
-        className="svg-doctor-button"
+        className="svg-doctor-button color1"
         onClick={() => handleMoveEyesDirection("right")}
       >
-        Move Right
+        Look Right
       </button>
+
       <button
-        className="svg-doctor-button"
+        className="svg-doctor-button color1"
         onClick={() => handleMoveEyesDirection("up")}
       >
-        Move Up
+        Look Up
       </button>
+
       <button
-        className="svg-doctor-button"
+        className="svg-doctor-button color1"
         onClick={() => handleMoveEyesDirection("down")}
       >
-        Move Down
+        Look Down
       </button>
-      <button className="svg-doctor-button" onClick={handleBlinkBoth}>
+
+      <button className="svg-doctor-button color2" onClick={handleBlinkBoth}>
         Blink
       </button>
-      <button className="svg-doctor-button" onClick={handleBlinkLeft}>
-        Blink Left
+
+      <button className="svg-doctor-button color2" onClick={handleBlinkLeft}>
+        Wink Left
       </button>
-      <button className="svg-doctor-button" onClick={handleBlinkRight}>
-        Blink Right
+
+      <button className="svg-doctor-button color2" onClick={handleBlinkRight}>
+        Wink Right
       </button>
-      <button className="svg-doctor-button" onClick={handleRaiseLeftEyebrow}>
+
+      <button
+        className="svg-doctor-button color3"
+        onClick={handleRaiseLeftEyebrow}
+      >
         Raise Left Brow
       </button>
-      <button className="svg-doctor-button" onClick={handleRaiseRightEyebrow}>
+
+      <button
+        className="svg-doctor-button color3"
+        onClick={handleRaiseRightEyebrow}
+      >
         Raise Right Brow
       </button>
-      <button className="svg-doctor-button" onClick={handleRaiseBothEyebrows}>
+
+      <button
+        className="svg-doctor-button color3"
+        onClick={handleRaiseBothEyebrows}
+      >
         Raise Both Brows
       </button>
-      <button onClick={talk} className="svg-doctor-button">
+
+      <button onClick={talk} className="svg-doctor-button color4">
         Talk
       </button>
     </div>

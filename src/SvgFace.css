@@ -1,4 +1,9 @@
-/* SvgFace.css */
+.faces-container {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  grid-gap: 20px;
+}
 
 .svg-doctor-container {
   margin-top: 10px;
@@ -8,43 +13,63 @@
 }
 
 .svg-doctor-face svg {
-  display: block; /* Prevents extra space below SVG */
+  display: block;
   margin: 0 auto;
 }
 
-/* Style for the eyelids */
 .svg-doctor-eyelid {
-  /* Smooth transition for height change */
   transition:
     height 0.3s ease,
     y 0.3s ease;
-  /* Set transform-origin equivalent by adjusting y and height */
 }
 
-/* Style for closed eyelids */
-.svg-doctor-eyelid.closed {
-  /* Height will be set dynamically in the component based on top/bottom */
-}
-
-/* Buttons remain the same */
 .svg-doctor-buttons {
   display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap */
+  flex-wrap: wrap;
   justify-content: center;
   margin-top: 20px;
-  max-width: 400px; /* Limit button container width */
+  max-width: 400px;
 }
 
 .svg-doctor-button {
   margin: 5px;
   padding: 5px 10px;
   border-radius: 25px;
-  background-color: #3e3bff;
-  color: rgb(208, 218, 238);
   border: none;
   cursor: pointer;
 }
 
-.svg-doctor-button:hover {
+.svg-doctor-button.color1 {
+  background-color: #3e3bff;
+  color: rgb(208, 218, 238);
+}
+
+.svg-doctor-button.color1:hover {
   background-color: #6663ff;
+}
+
+.svg-doctor-button.color2 {
+  background-color: #239956;
+  color: #292b2a;
+}
+
+.svg-doctor-button.color2:hover {
+  background-color: #37ed86;
+}
+
+.svg-doctor-button.color3 {
+  background-color: #fa961b;
+}
+
+.svg-doctor-button.color3:hover {
+  background-color: #f0ae5d;
+}
+
+.svg-doctor-button.color4 {
+  color: white;
+  background-color: #fa1b53;
+}
+
+.svg-doctor-button.color4:hover {
+  background-color: #f74874;
 }
