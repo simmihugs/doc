@@ -73,3 +73,11 @@
 .svg-doctor-button.color4:hover {
   background-color: #f74874;
 }
+
+.svg-doctor-button.color5 {
+  background-color: #ffdc17;
+}
+
+.svg-doctor-button.color5:hover {
+  background-color: #ede093;
+}

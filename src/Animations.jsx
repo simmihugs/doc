@@ -209,6 +209,10 @@ export default function Animations({
       <button onClick={talk} className="svg-doctor-button color4">
         Talk
       </button>
+
+      <button onClick={() => {}} className="svg-doctor-button color5">
+        Animate
+      </button>
     </div>
   );
 }

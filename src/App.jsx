@@ -39,13 +39,6 @@ export default function App() {
               setTalking={setTalking}
               size={size}
             />
-            {/*
-            <svg viewBox="-50 0 400 320">
-              <circle cx="150" cy="200" r="200" fill="#8f8f8f" />
-              <rect x="-50" y="200" width="400" height="200" fill="#8f8f8f" />
-            </svg>
-               
-              */}
           </div>
         ))}
       </div>
