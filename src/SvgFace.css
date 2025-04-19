@@ -1,0 +1,50 @@
+/* SvgFace.css */
+
+.svg-doctor-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.svg-doctor-face svg {
+  display: block; /* Prevents extra space below SVG */
+  margin: 0 auto;
+}
+
+/* Style for the eyelids */
+.svg-doctor-eyelid {
+  /* Smooth transition for height change */
+  transition:
+    height 0.3s ease,
+    y 0.3s ease;
+  /* Set transform-origin equivalent by adjusting y and height */
+}
+
+/* Style for closed eyelids */
+.svg-doctor-eyelid.closed {
+  /* Height will be set dynamically in the component based on top/bottom */
+}
+
+/* Buttons remain the same */
+.svg-doctor-buttons {
+  display: flex;
+  flex-wrap: wrap; /* Allow buttons to wrap */
+  justify-content: center;
+  margin-top: 20px;
+  max-width: 400px; /* Limit button container width */
+}
+
+.svg-doctor-button {
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 25px;
+  background-color: #3e3bff;
+  color: rgb(208, 218, 238);
+  border: none;
+  cursor: pointer;
+}
+
+.svg-doctor-button:hover {
+  background-color: #6663ff;
+}
