@@ -3,21 +3,7 @@ import "./SvgFace.css";
 import SvgMouth, { EXPRESSION_ORDER } from "./SvgMouth";
 import EyeLid from "./EyeLid";
 import EyeBrow from "./EyeBrow";
-import {
-  BASE_PUPIL_LEFT_CX,
-  BASE_PUPIL_Y,
-  BASE_EYEBROW_Y,
-  HEAD_CENTER_X,
-  HEAD_CENTER_Y,
-  HEAD_RADIUS,
-  LEFT_EYE_CX,
-  EYE_Y,
-  EYE_RX,
-  EYE_RY,
-  RIGHT_EYE_CX,
-  PUPIL_RX,
-  PUPIL_RY,
-} from "./constants";
+import * as Const from "./constants";
 
 function _handleMoveEyesDirection({
   direction,
@@ -38,25 +24,25 @@ function _handleMoveEyesDirection({
     case "right":
       temporaryPosition.x = Math.min(
         BASE_POSITION.x + moveXAmount,
-        BASE_POSITION.x + EYE_RX - PUPIL_RX,
+        BASE_POSITION.x + Const.EYE_RX - Const.PUPIL_RX,
       );
       break;
     case "left":
       temporaryPosition.x = Math.max(
         BASE_POSITION.x - moveXAmount,
-        BASE_POSITION.x - EYE_RX + PUPIL_RX,
+        BASE_POSITION.x - Const.EYE_RX + Const.PUPIL_RX,
       );
       break;
     case "up":
       temporaryPosition.y = Math.max(
         BASE_POSITION.y - moveYAmount,
-        BASE_POSITION.y - EYE_RY + PUPIL_RY,
+        BASE_POSITION.y - Const.EYE_RY + Const.PUPIL_RY,
       );
       break;
     case "down":
       temporaryPosition.y = Math.min(
         BASE_POSITION.y + moveYAmount,
-        BASE_POSITION.y + EYE_RY - PUPIL_RY,
+        BASE_POSITION.y + Const.EYE_RY - Const.PUPIL_RY,
       );
       break;
     default:
@@ -95,14 +81,14 @@ export default function SvgFace() {
   const [isBlinkingLeft, setIsBlinkingLeft] = useState(false);
   const [isBlinkingRight, setIsBlinkingRight] = useState(false);
   const [position, setPosition] = useState({
-    x: BASE_PUPIL_LEFT_CX,
-    y: BASE_PUPIL_Y,
+    x: Const.BASE_PUPIL_LEFT_CX,
+    y: Const.BASE_PUPIL_Y,
   });
   const [mouthExpression, setMouthExpression] = useState("neutral");
   const moveAmount = 10;
   const timeoutRef = useRef(null);
-  const [leftEyebrowY, setLeftEyebrowY] = useState(BASE_EYEBROW_Y);
-  const [rightEyebrowY, setRightEyebrowY] = useState(BASE_EYEBROW_Y);
+  const [leftEyebrowY, setLeftEyebrowY] = useState(Const.BASE_EYEBROW_Y);
+  const [rightEyebrowY, setRightEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const eyebrowMoveAmount = -5;
 
   function handleButtonClick() {
@@ -135,27 +121,30 @@ export default function SvgFace() {
     _handleMoveEyesDirection({
       direction,
       setPosition,
-      BASE_POSITION: { x: BASE_PUPIL_LEFT_CX, y: BASE_PUPIL_Y },
+      BASE_POSITION: {
+        x: Const.BASE_PUPIL_LEFT_CX,
+        y: Const.BASE_PUPIL_Y,
+      },
       moveAmount,
       timeoutRef,
     });
   }
   function handleRaiseLeftEyebrow() {
     setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setTimeout(() => setLeftEyebrowY(BASE_EYEBROW_Y), 300);
+    setTimeout(() => setLeftEyebrowY(Const.BASE_EYEBROW_Y), 300);
   }
 
   function handleRaiseRightEyebrow() {
     setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
-    setTimeout(() => setRightEyebrowY(BASE_EYEBROW_Y), 300);
+    setTimeout(() => setRightEyebrowY(Const.BASE_EYEBROW_Y), 300);
   }
 
   function handleRaiseBothEyebrows() {
     setLeftEyebrowY((prevY) => prevY + eyebrowMoveAmount);
     setRightEyebrowY((prevY) => prevY + eyebrowMoveAmount);
     setTimeout(() => {
-      setLeftEyebrowY(BASE_EYEBROW_Y);
-      setRightEyebrowY(BASE_EYEBROW_Y);
+      setLeftEyebrowY(Const.BASE_EYEBROW_Y);
+      setRightEyebrowY(Const.BASE_EYEBROW_Y);
     }, 300);
   }
   return (
@@ -174,44 +163,44 @@ export default function SvgFace() {
           </desc>
 
           <circle
-            cx={HEAD_CENTER_X}
-            cy={HEAD_CENTER_Y}
-            r={HEAD_RADIUS}
+            cx={Const.HEAD_CENTER_X}
+            cy={Const.HEAD_CENTER_Y}
+            r={Const.HEAD_RADIUS}
             fill="#f5d4a0"
           />
 
           <ellipse
-            cx={LEFT_EYE_CX}
-            cy={EYE_Y}
-            rx={EYE_RX}
-            ry={EYE_RY}
+            cx={Const.LEFT_EYE_CX}
+            cy={Const.EYE_Y}
+            rx={Const.EYE_RX}
+            ry={Const.EYE_RY}
             fill="rgb(247, 247, 247)"
           />
           <ellipse
-            cx={RIGHT_EYE_CX}
-            cy={EYE_Y}
-            rx={EYE_RX}
-            ry={EYE_RY}
+            cx={Const.RIGHT_EYE_CX}
+            cy={Const.EYE_Y}
+            rx={Const.EYE_RX}
+            ry={Const.EYE_RY}
             fill="rgb(247, 247, 247)"
           />
 
           <ellipse
             cx={position.x}
             cy={position.y}
-            rx={PUPIL_RX}
-            ry={PUPIL_RY}
+            rx={Const.PUPIL_RX}
+            ry={Const.PUPIL_RY}
             fill="black"
           />
           <ellipse
-            cx={position.x + (RIGHT_EYE_CX - LEFT_EYE_CX)}
+            cx={position.x + (Const.RIGHT_EYE_CX - Const.LEFT_EYE_CX)}
             cy={position.y}
-            rx={PUPIL_RX}
-            ry={PUPIL_RY}
+            rx={Const.PUPIL_RX}
+            ry={Const.PUPIL_RY}
             fill="black"
           />
 
-          <EyeBrow x={LEFT_EYE_CX} y={leftEyebrowY} />
-          <EyeBrow x={RIGHT_EYE_CX} y={rightEyebrowY} />
+          <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
+          <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
           <SvgMouth mouthExpression={mouthExpression} />
 
           <EyeLid
