@@ -23,13 +23,14 @@ export default function SvgFace({
   talking,
   setTalking,
   eyebrowMoveAmount,
+  size = 100,
 }) {
   return (
     <div className="svg-doctor-face">
       <svg
         viewBox="0 0 200 200"
-        width="180"
-        height="180"
+        width={(180 * size) / 100}
+        height={(180 * size) / 100}
         aria-labelledby="faceTitle faceDesc"
       >
         <title id="faceTitle">Animated SVG Face</title>

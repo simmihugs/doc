@@ -42,6 +42,51 @@ export default function App() {
         talking={talking}
         setTalking={setTalking}
         eyebrowMoveAmount={eyebrowMoveAmount}
+        size={10}
+      />{" "}
+      <SvgFace
+        isBlinking={isBlinking}
+        setIsBlinking={setIsBlinking}
+        isBlinkingLeft={isBlinkingLeft}
+        setIsBlinkingLeft={setIsBlinkingLeft}
+        isBlinkingRight={isBlinkingRight}
+        setIsBlinkingRight={setIsBlinkingRight}
+        position={position}
+        setPosition={setPosition}
+        mouthExpression={mouthExpression}
+        setMouthExpression={setMouthExpression}
+        moveAmount={moveAmount}
+        timeoutRef={timeoutRef}
+        leftEyebrowY={leftEyebrowY}
+        setLeftEyebrowY={setLeftEyebrowY}
+        rightEyebrowY={rightEyebrowY}
+        setRightEyebrowY={setRightEyebrowY}
+        talking={talking}
+        setTalking={setTalking}
+        eyebrowMoveAmount={eyebrowMoveAmount}
+        size={25}
+      />{" "}
+      <SvgFace
+        isBlinking={isBlinking}
+        setIsBlinking={setIsBlinking}
+        isBlinkingLeft={isBlinkingLeft}
+        setIsBlinkingLeft={setIsBlinkingLeft}
+        isBlinkingRight={isBlinkingRight}
+        setIsBlinkingRight={setIsBlinkingRight}
+        position={position}
+        setPosition={setPosition}
+        mouthExpression={mouthExpression}
+        setMouthExpression={setMouthExpression}
+        moveAmount={moveAmount}
+        timeoutRef={timeoutRef}
+        leftEyebrowY={leftEyebrowY}
+        setLeftEyebrowY={setLeftEyebrowY}
+        rightEyebrowY={rightEyebrowY}
+        setRightEyebrowY={setRightEyebrowY}
+        talking={talking}
+        setTalking={setTalking}
+        eyebrowMoveAmount={eyebrowMoveAmount}
+        size={50}
       />
       <SvgFace
         isBlinking={isBlinking}
