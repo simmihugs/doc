@@ -1,0 +1,420 @@
+import React, { useState, useRef, useEffect } from "react";
+// Assuming your CSS files are set up correctly
+import "./App.css"; // Contains general styles if needed
+import "./Doc.css"; // Contains specific styles for the face/doctor
+
+// --- Style Definition (Add this to your CSS file e.g., Doc.css) ---
+/*
+.mouth-path {
+  transition: d 0.3s ease-in-out; // Smooth transition for the 'd' attribute
+}
+
+.doctor-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f0f0f0; // Example background
+  font-family: sans-serif;
+}
+
+.doctor-head {
+  width: 200px; // Adjust size as needed
+  height: 200px;
+  background-color: #f7d9a3; // Skin tone
+  border-radius: 50%;
+  position: relative;
+  border: 2px solid #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  // Ensure SVG is positioned correctly within the head
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; // Align mouth towards the bottom
+}
+
+.doctor-eye {
+  width: 30px; // Eye size
+  height: 40px; // Eye height (more oval)
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 60px; // Position eyes
+  border: 1px solid #333;
+}
+
+.doctor-eye.left {
+  left: 40px;
+}
+
+.doctor-eye.right {
+  right: 40px;
+}
+
+.doctor-eye-pupil {
+  width: 15px; // Pupil size
+  height: 15px;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+  // Base positioning is handled by inline style, transform for centering
+  transform: translate(-50%, -50%);
+  transition: top 0.2s ease-out, left 0.2s ease-out; // Smooth pupil movement
+}
+
+.doctor-eyelid {
+  width: 32px; // Slightly wider than eye
+  height: 20px; // Half the eye height
+  background-color: #f7d9a3; // Same as skin tone
+  position: absolute;
+  border-top: 1px solid #333; // Eyelid line
+  border-bottom: 1px solid #333;
+  transition: transform 0.15s ease-in-out;
+  z-index: 1; // Ensure eyelids are above eyes
+}
+
+.doctor-eyelid.left { left: 39px; } // Align with eyes
+.doctor-eyelid.right { right: 39px; } // Align with eyes
+.doctor-eyelid.top {
+  top: 60px; // Align with top of eye
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0; // Curve top eyelid
+  transform-origin: bottom;
+  transform: scaleY(1);
+}
+.doctor-eyelid.bottom {
+  top: 80px; // Align with bottom of eye
+  border-radius: 0 0 50% 50% / 0 0 100% 100%; // Curve bottom eyelid
+  transform-origin: top;
+  transform: scaleY(1);
+}
+
+// Blink animation
+.doctor-eyelid.closed.top { transform: scaleY(0); }
+.doctor-eyelid.closed.bottom { transform: scaleY(0); }
+
+
+// Mouth SVG positioning
+.mouth-svg {
+  width: 100px; // Adjust size as needed
+  height: 50px; // Adjust size as needed
+  position: absolute;
+  bottom: 25px; // Position mouth inside the head
+  overflow: visible; // Allow path to draw outside viewBox if needed
+}
+
+.doctor-buttons {
+  display: flex;
+  flex-wrap: wrap; // Allow buttons to wrap on smaller screens
+  gap: 10px; // Space between buttons
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.doctor-blink { // General button styling
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4a90e2; // Button color
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.doctor-blink:hover {
+  background-color: #357abd; // Darker on hover
+}
+
+.doctor-blink:active {
+  background-color: #2a659a; // Even darker when clicked
+  transform: translateY(1px); // Slight press effect
+}
+*/
+// --- End Style Definition ---
+
+
+// Define SVG path data for different mouth expressions
+// Note: Neutral is now a flat curve for better CSS transitions with smile/frown
+const MOUTH_PATHS = {
+  neutral: "M 30 60 Q 50 60 70 60",    // Flat curve for neutral
+  smile: "M 30 60 Q 50 90 70 60",    // Upward curve for a smile
+  frown: "M 30 70 Q 50 40 70 70",    // Downward curve for a frown
+  // Speech animation frames
+  speech_mid: "M 35 65 Q 50 75 65 65", // Slightly open
+  speech_o: "M 40 70 Q 50 85 60 70 Q 50 55 40 70 Z" // More open, 'O' shape
+};
+
+// Sequence for speech animation
+const SPEECH_SEQUENCE = [
+  MOUTH_PATHS.speech_mid,
+  MOUTH_PATHS.speech_o,
+  MOUTH_PATHS.speech_mid,
+  MOUTH_PATHS.neutral, // Brief pause/return
+  MOUTH_PATHS.speech_mid,
+  MOUTH_PATHS.speech_o,
+];
+const SPEECH_FRAME_DURATION = 150; // ms per frame
+
+// Helper function for blinking (remains the same)
+function _handleBlink({
+  setIsBlinking,
+  setIsBlinkingLeft,
+  setIsBlinkingRight,
+  left = false,
+  right = false,
+}) {
+  setIsBlinking(true);
+  setIsBlinkingLeft(left);
+  setIsBlinkingRight(right);
+  setTimeout(() => {
+    setIsBlinking(false);
+    setIsBlinkingLeft(false);
+    setIsBlinkingRight(false);
+  }, 300); // Blink duration
+}
+
+// Helper function for moving eyes (remains the same)
+function _handleMoveEyesDirection({
+  direction,
+  setPosition,
+  BASE_POSITION,
+  moveAmount,
+  timeoutRef,
+}) {
+  if (timeoutRef.current) {
+    clearTimeout(timeoutRef.current);
+  }
+
+  let temporaryPosition = { ...BASE_POSITION };
+
+  switch (direction) {
+    case "right": temporaryPosition.x += moveAmount + 5; break;
+    case "left": temporaryPosition.x -= moveAmount + 2; break;
+    case "up": temporaryPosition.y -= moveAmount - 2; break;
+    case "down": temporaryPosition.y += moveAmount - 5; break;
+    default: console.warn("Unknown direction:", direction); return;
+  }
+
+  setPosition(temporaryPosition);
+
+  timeoutRef.current = setTimeout(() => {
+    setPosition(BASE_POSITION);
+    timeoutRef.current = null;
+  }, 500); // Increased duration for eye movement visibility
+}
+
+
+// Main App component
+export default function App() {
+  // --- State Variables ---
+  const [isBlinking, setIsBlinking] = useState(false);
+  const [isBlinkingLeft, setIsBlinkingLeft] = useState(false);
+  const [isBlinkingRight, setIsBlinkingRight] = useState(false);
+
+  const BASE_POSITION = { x: 45, y: 38 }; // Base pupil position
+  const [position, setPosition] = useState(BASE_POSITION);
+  const moveAmount = 10; // How far pupils move
+  const eyeMoveTimeoutRef = useRef(null); // Ref for eye movement timeout
+
+  // Mouth state
+  const [mouthPath, setMouthPath] = useState(MOUTH_PATHS.neutral); // Start with neutral path
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const expressionTimeoutRef = useRef(null); // Ref for smile/frown timeout
+  const speechIntervalRef = useRef(null); // Ref for speech animation interval
+  const speechTimeoutRef = useRef(null); // Ref for stopping speech animation
+
+  // --- Cleanup Effect ---
+  // Clear any running timeouts or intervals when the component unmounts
+  useEffect(() => {
+    return () => {
+      if (expressionTimeoutRef.current) clearTimeout(expressionTimeoutRef.current);
+      if (speechIntervalRef.current) clearInterval(speechIntervalRef.current);
+      if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
+      if (eyeMoveTimeoutRef.current) clearTimeout(eyeMoveTimeoutRef.current);
+    };
+  }, []);
+
+  // --- Event Handlers ---
+
+  // Blinking handlers (remain the same logic)
+  function handleBlink({ left = false, right = false }) {
+    _handleBlink({ setIsBlinking, setIsBlinkingLeft, setIsBlinkingRight, left, right });
+  }
+  function handleBlinkLeft() { handleBlink({ left: true }); }
+  function handleBlinkBoth() { handleBlink({ left: true, right: true }); }
+  function handleBlinkRight() { handleBlink({ right: true }); }
+
+  // Eye movement handler (remains the same logic)
+  function handleMoveEyesDirection(direction) {
+    _handleMoveEyesDirection({
+      direction, setPosition, BASE_POSITION, moveAmount,
+      timeoutRef: eyeMoveTimeoutRef, // Use the correct ref
+    });
+  }
+
+  // --- New Mouth Expression Handlers ---
+
+  // Clear any ongoing mouth animation before starting a new one
+  const clearMouthAnimations = () => {
+    if (expressionTimeoutRef.current) clearTimeout(expressionTimeoutRef.current);
+    if (speechIntervalRef.current) clearInterval(speechIntervalRef.current);
+    if (speechTimeoutRef.current) clearTimeout(speechTimeoutRef.current);
+    setIsSpeaking(false); // Ensure speaking state is reset
+    expressionTimeoutRef.current = null;
+    speechIntervalRef.current = null;
+    speechTimeoutRef.current = null;
+  };
+
+  // Handle Smile Button Click
+  const handleSmileClick = () => {
+    if (isSpeaking) return; // Don't interrupt speech
+    clearMouthAnimations(); // Clear previous animations
+
+    setMouthPath(MOUTH_PATHS.smile); // Set to smile
+
+    // Set timeout to return to neutral
+    expressionTimeoutRef.current = setTimeout(() => {
+      setMouthPath(MOUTH_PATHS.neutral);
+      expressionTimeoutRef.current = null;
+    }, 1000); // Duration of smile
+  };
+
+  // Handle Frown Button Click
+  const handleFrownClick = () => {
+    if (isSpeaking) return; // Don't interrupt speech
+    clearMouthAnimations(); // Clear previous animations
+
+    setMouthPath(MOUTH_PATHS.frown); // Set to frown
+
+    // Set timeout to return to neutral
+    expressionTimeoutRef.current = setTimeout(() => {
+      setMouthPath(MOUTH_PATHS.neutral);
+      expressionTimeoutRef.current = null;
+    }, 1000); // Duration of frown
+  };
+
+  // Handle Speak Button Click
+  const handleSpeakClick = () => {
+    if (isSpeaking) return; // Prevent multiple clicks while speaking
+    clearMouthAnimations(); // Clear previous animations
+
+    setIsSpeaking(true);
+    let frameIndex = 0;
+
+    // Start interval to cycle through speech frames
+    speechIntervalRef.current = setInterval(() => {
+      setMouthPath(SPEECH_SEQUENCE[frameIndex % SPEECH_SEQUENCE.length]);
+      frameIndex++;
+    }, SPEECH_FRAME_DURATION);
+
+    // Set timeout to stop the animation after a certain duration
+    const totalSpeechDuration = SPEECH_SEQUENCE.length * SPEECH_FRAME_DURATION * 2; // Repeat sequence twice
+    speechTimeoutRef.current = setTimeout(() => {
+      if (speechIntervalRef.current) clearInterval(speechIntervalRef.current);
+      setMouthPath(MOUTH_PATHS.neutral); // Return to neutral
+      setIsSpeaking(false);
+      speechIntervalRef.current = null;
+      speechTimeoutRef.current = null;
+    }, totalSpeechDuration);
+  };
+
+
+  return (
+    <div className="doctor-container">
+      <div className="doctor-head">
+        <div
+          className={`doctor-eyelid left top ${isBlinkingLeft && isBlinking ? "closed" : ""
+            }`}
+        ></div>
+        <div
+          className={`doctor-eyelid left bottom ${isBlinkingLeft && isBlinking ? "closed" : ""
+            }`}
+        ></div>
+        <div
+          className={`doctor-eyelid right top ${isBlinkingRight && isBlinking ? "closed" : ""
+            }`}
+        ></div>
+        <div
+          className={`doctor-eyelid right bottom ${isBlinkingRight && isBlinking ? "closed" : ""
+            }`}
+        ></div>
+
+        <div className="doctor-eye left"></div>
+        <div className="doctor-eye right"></div>
+
+        <div
+          className="doctor-eye-pupil"
+          style={{
+            left: `${position.x}px`,
+            top: `${position.y}px`,
+          }}
+        />
+        <div
+          className="doctor-eye-pupil"
+          style={{
+            left: `${position.x + 70}px`,
+            top: `${position.y}px`,
+          }}
+        />
+
+        <svg className="w-24 h-24 absolute bottom-4" viewBox="0 0 100 100">
+          <path
+            d={MOUTH_PATHS[mouthExpression]}
+            stroke="black"
+            strokeWidth="5"
+            fill="transparent"
+            strokeLinecap="round"
+          />
+        </svg>
+
+      </div>
+      <div className="doctor-buttons">
+        <button
+          onClick={handleButtonClick}
+          className="doctor-blink"
+        >
+          Change Expression
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("left")}
+        >
+          Move Left
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("right")}
+        >
+          Move Right
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("up")}
+        >
+          Move Up
+        </button>
+        <button
+          className="doctor-blink"
+          onClick={() => handleMoveEyesDirection("down")}
+        >
+          Move Down
+        </button>
+
+        <button className="doctor-blink" onClick={handleBlinkBoth}>
+          Blink
+        </button>
+        <button className="doctor-blink" onClick={handleBlinkLeft}>
+          Blink left
+        </button>
+        <button className="doctor-blink" onClick={handleBlinkRight}>
+          Blink right
+        </button>
+      </div>
+    </div>
+  );
+
+
+
+}
