@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./SvgFace.css";
-import SvgMouth, { EXPRESSION_ORDER } from "./SvgMouth";
+import SvgMouth from "./SvgMouth";
 import EyeLid from "./EyeLid";
 import EyeBrow from "./EyeBrow";
 import Animations from "./Animations";
@@ -75,7 +75,7 @@ export default function SvgFace() {
 
           <EyeBrow x={Const.LEFT_EYE_CX} y={leftEyebrowY} />
           <EyeBrow x={Const.RIGHT_EYE_CX} y={rightEyebrowY} />
-          <SvgMounth mouthExpression={mouthExpression} />
+          <SvgMouth mouthExpression={mouthExpression} />
 
           <EyeLid
             isBlinking={isBlinking}
