@@ -19,9 +19,13 @@ export default function App() {
   const [leftEyebrowY, setLeftEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const [rightEyebrowY, setRightEyebrowY] = useState(Const.BASE_EYEBROW_Y);
   const [talking, setTalking] = useState(false);
+  const [headTiltAngle, setHeadTiltAngle] = useState(0);
+  const [shoulderLift, setShoulderLift] = useState(0);
+  const [isIdle, setIsIdle] = useState(false);
+
   const eyebrowMoveAmount = -5;
-  const sizes = [10, 25, 50, 100];
-  //const sizes = [100];
+  const sizes = [25, 30, 35, 40, 50, 60, 70, 80, 100];
+
   return (
     <div className="svg-doctor-container">
       <div className="faces-container">
@@ -38,6 +42,9 @@ export default function App() {
               talking={talking}
               setTalking={setTalking}
               size={size}
+              headTiltAngle={headTiltAngle}
+              shoulderLift={shoulderLift}
+              isIdle={isIdle}
             />
           </div>
         ))}
@@ -56,6 +63,9 @@ export default function App() {
         setRightEyebrowY={setRightEyebrowY}
         eyebrowMoveAmount={eyebrowMoveAmount}
         setTalking={setTalking}
+        setHeadTiltAngle={setHeadTiltAngle}
+        setShoulderLift={setShoulderLift}
+        setIsIdle={setIsIdle}
       />
     </div>
   );

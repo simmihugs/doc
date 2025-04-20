@@ -86,8 +86,13 @@ export default function Animations({
   setRightEyebrowY,
   eyebrowMoveAmount,
   setTalking,
+  setHeadTiltAngle,
+  setShoulderLift,
+  setIsIdle,
 }) {
   const speechAnimationRef = useRef(null);
+  const animationRef = useRef(null);
+
   function handleButtonClick() {
     const currentIndex = EXPRESSION_ORDER.indexOf(mouthExpression);
     const nextIndex = (currentIndex + 1) % EXPRESSION_ORDER.length;
@@ -142,6 +147,87 @@ export default function Animations({
   function talk() {
     setTalking(true);
   }
+
+  const idleAnimate = useCallback(() => {
+    if (!animationRef.current) {
+      setIsIdle(true);
+      animationRef.current = setInterval(() => {
+        const actions = [
+          () => {
+            console.log("look up");
+            handleMoveEyesDirection("up");
+          },
+          () => {
+            console.log("look right");
+            handleMoveEyesDirection("right");
+          },
+          () => {
+            console.log("look down");
+            handleMoveEyesDirection("down");
+          },
+          () => {
+            console.log("look left");
+            handleMoveEyesDirection("left");
+          },
+          () => {
+            console.log("handleBlinkBoth();");
+            handleBlinkBoth();
+          },
+          () => {
+            console.log("handleBlinkLeft();");
+            handleBlinkLeft();
+          },
+          () => {
+            console.log("handleBlinkRight();");
+            handleBlinkRight();
+          },
+          () => {
+            console.log("handleRaiseBothEyebrows();");
+            handleRaiseBothEyebrows();
+          },
+          () => {
+            console.log("handleRaiseLeftEyebrow();");
+            handleRaiseLeftEyebrow();
+          },
+          () => {
+            console.log("handleRaiseRightEyebrow();");
+            handleRaiseRightEyebrow();
+          },
+          () => {
+            const angle = 15;
+            console.log(`setHeadTiltAngle(${angle})`);
+            setHeadTiltAngle((prev) => (prev === 0 ? angle : 0));
+            setTimeout(() => setHeadTiltAngle(0), 1000);
+          },
+          () => {
+            const angle = -15;
+            console.log(`setHeadTiltAngle(${angle})`);
+            setHeadTiltAngle((prev) => (prev === 0 ? angle : 0));
+            setTimeout(() => setHeadTiltAngle(0), 1000);
+          },
+          () => {
+            console.log("setShoulderLift(Math.random() * 10);");
+            handleLiftShoulders();
+          },
+        ];
+        actions[Math.floor(Math.random() * actions.length)]();
+      }, 1000);
+    } else {
+      clearInterval(animationRef.current);
+      animationRef.current = null;
+      setIsIdle(false);
+    }
+  }, []);
+
+  const handleTiltHead = useCallback(() => {
+    setHeadTiltAngle((prev) => (prev === 0 ? 15 : 0));
+    setTimeout(() => setHeadTiltAngle(0), 1000);
+  }, []);
+
+  const handleLiftShoulders = useCallback(() => {
+    setShoulderLift(15);
+    setTimeout(() => setShoulderLift(0), 500);
+  }, []);
 
   return (
     <div className="svg-doctor-buttons">
@@ -210,7 +296,18 @@ export default function Animations({
         Talk
       </button>
 
-      <button onClick={() => {}} className="svg-doctor-button color5">
+      <button onClick={handleTiltHead} className="svg-doctor-button color5">
+        Tilt head
+      </button>
+
+      <button
+        onClick={handleLiftShoulders}
+        className="svg-doctor-button color5"
+      >
+        Lift shoulders
+      </button>
+
+      <button onClick={idleAnimate} className="svg-doctor-button color5">
         Animate
       </button>
     </div>

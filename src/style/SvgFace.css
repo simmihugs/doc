@@ -5,6 +5,10 @@
   grid-gap: 20px;
 }
 
+svg g {
+  transition: transform 0.3s ease-in-out;
+}
+
 .svg-doctor-container {
   margin-top: 10px;
   display: flex;
