@@ -1,13 +1,12 @@
 #+TTILE: Testing the tts api
 
-* Problem
+* DONE Problem [2/2]
   Using the TTS api works, but it is slow to download, because my
   hardware to run the tts is slow. So I am trying to use streaming of
   the audio to speed up things. But now I am not sure if it actually
   increases the speed which leads to the question, is it acutally
   streaming?
-* cURL
-** Stream
+** DONE Test
    #+begin_src shell
      ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
      ╰─> curl -s -o /dev/null -w "First byte: %{time_starttransfer}s\n" \                   ✨🐱🏍🎉😎 (venv) ⎇  on branch main
@@ -33,3 +32,5 @@
      ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
      ╰─>   
    #+end_src
+** DONE Result
+   The kokoro api does not create a consumable stream
