@@ -1,0 +1,17 @@
+export const phrases = [
+  "Would you like me to go over this part with you?",
+  "Should I break down this section for you?",
+  "Is there anything you'd like me to clarify here?",
+  "Want a quick explanation of this paragraph?",
+  "Can I help you understand this section better?",
+  "Do you have any questions about this part?",
+  //"Need a deeper explanation for this paragraph?",
+  //"Would you like more details on this section?",
+  //"Is there anything unclear in this part?",
+  //"Want me to walk you through this paragraph?",
+  //"Would a summary of this section help?",
+  //"Should I elaborate on this point?",
+  //"Do you need further clarification here?",
+  //"Is there a part of this you'd like me to explain?",
+  //"Can I assist with understanding this paragraph?",
+];

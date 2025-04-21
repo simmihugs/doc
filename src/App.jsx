@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
-import "./style/SvgFace.css";
-import SvgFace from "./character/head/Face";
+import "./style/Svg.css";
+import "./style/Textblocks.css";
+import Avatar from "./character/Avatar";
+import TextBlock from "./ui/TextBlock";
+import { phrases } from "./ui/data";
 import Animations from "./Animations";
 import * as Const from "./constants";
-import Shirt from "./character/body/Shirt";
 
 export default function App() {
   const [isBlinking, setIsBlinking] = useState(false);
@@ -22,7 +24,6 @@ export default function App() {
   const [headTiltAngle, setHeadTiltAngle] = useState(0);
   const [shoulderLift, setShoulderLift] = useState(0);
   const [isIdle, setIsIdle] = useState(false);
-
   const eyebrowMoveAmount = -5;
   const sizes = [25, 30, 35, 40, 50, 60, 70, 80, 100];
 
@@ -31,7 +32,7 @@ export default function App() {
       <div className="faces-container">
         {sizes.map((size, index) => (
           <div key={index}>
-            <SvgFace
+            <Avatar
               isBlinking={isBlinking}
               isBlinkingLeft={isBlinkingLeft}
               isBlinkingRight={isBlinkingRight}
@@ -67,6 +68,12 @@ export default function App() {
         setShoulderLift={setShoulderLift}
         setIsIdle={setIsIdle}
       />
+
+      <div>
+        {phrases.map((phrase, index) => (
+          <TextBlock key={index} phrase={phrase} />
+        ))}
+      </div>
     </div>
   );
 }

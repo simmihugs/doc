@@ -1,0 +1,35 @@
+#+TTILE: Testing the tts api
+
+* Problem
+  Using the TTS api works, but it is slow to download, because my
+  hardware to run the tts is slow. So I am trying to use streaming of
+  the audio to speed up things. But now I am not sure if it actually
+  increases the speed which leads to the question, is it acutally
+  streaming?
+* cURL
+** Stream
+   #+begin_src shell
+     ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
+     ╰─> curl -s -o /dev/null -w "First byte: %{time_starttransfer}s\n" \                   ✨🐱🏍🎉😎 (venv) ⎇  on branch main
+       -N --no-buffer \
+       -H "Content-Type: application/json" \
+       -d '{"model":"kokoro","voice":"af_bella","input":"Your text","response_format":"pcm"}' \
+       http://localhost:8880/v1/audio/speech
+
+     First byte: 0.004295s
+     ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
+     ╰─>    
+   #+end_src
+   #+begin_src shell
+     ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
+     ╰─> time curl \                                                                        ✨🐱🏍🎉😎 (venv) ⎇  on branch main
+       -H "Content-Type: application/json" \
+       -d '{"model":"kokoro","voice":"af_bella","input":"Can I assist...","response_format":"pcm"}' \
+       http://localhost:8880/v1/audio/speech -o output.pcm 
+       % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                      Dload  Upload   Total   Spent    Left  Speed
+     100 57991    0 57904  100    87  31277     46  0:00:01  0:00:01 --:--:-- 31312
+     curl -H "Content-Type: application/json" -d   -o output.pcm  0.01s user 0.01s system 0% cpu 1.863 total
+     ╭[simmi@simmi-ThinkPad-T440s] ~/Projects/doc/test 
+     ╰─>   
+   #+end_src
